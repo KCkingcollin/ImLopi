@@ -1,5 +1,7 @@
 <?php //improved by dodo
 
+// dodo if you see this remind me to add you as a contributor
+
 // Define constants for the file path and the maximum count value
 define("COUNTER_FILE_PATH", "count.txt");
 define("MAX_COUNT_VALUE", 10);
