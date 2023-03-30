@@ -43,7 +43,6 @@ lopiButton.addEventListener("click", () => {
     yourCountElement.innerHTML = yourCount;
     publicCounter += clickCount;
     publicCounterElement.innerHTML = publicCounter;
-    clickCount = 0;
     
     // Randomly display lopi image
     const lopiImage = new Image();
