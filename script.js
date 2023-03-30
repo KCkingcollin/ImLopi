@@ -37,7 +37,14 @@ setInterval(() => {
 
 lopiButton.addEventListener("click", () => {
     clickCount++;
-
+    
+    // Update your count and public counter
+    yourCount += clickCount;
+    yourCountElement.innerHTML = yourCount;
+    publicCounter += clickCount;
+    publicCounterElement.innerHTML = publicCounter;
+    clickCount = 0;
+    
     // Randomly display lopi image
     const lopiImage = new Image();
     lopiImage.src = `lopi_images/lopi${Math.floor(Math.random() * 3) + 1}.png`;
@@ -53,13 +60,6 @@ lopiButton.addEventListener("click", () => {
     // Play lopi audio
     const lopiAudio = new Audio(`lopi_audio/lopi${Math.floor(Math.random() * 3) + 1}.mp3`);
     lopiAudio.play();
-
-    // Update your count and public counter
-    yourCount += clickCount;
-    yourCountElement.innerHTML = yourCount;
-    publicCounter += clickCount;
-    publicCounterElement.innerHTML = publicCounter;
-    clickCount = 0;
 });
 
 // Send click count to server every 500 milliseconds
