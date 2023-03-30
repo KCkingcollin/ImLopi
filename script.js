@@ -33,15 +33,13 @@ setInterval(() => {
             }
         })
         .catch((err) => console.error(err));
-}, 2000);
+}, 5000);
 
 lopiButton.addEventListener("click", () => {
     clickCount++;
     yourCount++;
     yourCountElement.innerHTML = yourCount;
-    
-    // Update your public counter
-    publicCounter += clickCount;
+    publicCounter++;
     publicCounterElement.innerHTML = publicCounter;
     
     // Randomly display lopi image
@@ -61,18 +59,12 @@ lopiButton.addEventListener("click", () => {
     lopiAudio.play();
 });
 
-// Send click count to server every 500 milliseconds
+// Send click count to server every 1 second
 setInterval(() => {
     if (clickCount > 0) {
         fetch(`/increment.php?count=${clickCount}`)
-            .then((res) => res.text())
-            .then((data) => {
-                publicCounter = parseInt(data);
-                if (!isNaN(publicCounter)) {
-                    publicCounterElement.innerHTML = publicCounter;
-                }
-            })
             .catch((err) => console.error(err));
         clickCount = 0;
     }
-}, 500);
+    document.cookie = `yourCount=${yourCount}`;
+}, 1000);
