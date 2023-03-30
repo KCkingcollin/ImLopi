@@ -37,10 +37,10 @@ setInterval(() => {
 
 lopiButton.addEventListener("click", () => {
     clickCount++;
-    
-    // Update your count and public counter
-    yourCount += clickCount;
+    yourCount++;
     yourCountElement.innerHTML = yourCount;
+    
+    // Update your public counter
     publicCounter += clickCount;
     publicCounterElement.innerHTML = publicCounter;
     
