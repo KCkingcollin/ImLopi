@@ -65,6 +65,8 @@ setInterval(() => {
         fetch(`/increment.php?count=` + clickCount, { cache: 'no-cache' })
             .catch((err) => console.error(err));
         clickCount = 0;
+        if (yourCountCookie) {
+            document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
+        }
     }
-    document.cookie = `yourCount=${yourCount}`;
 }, 1000);
