@@ -16,7 +16,7 @@ else {
 }
 
 // Get initial value of publicCounter from server
-fetch("/update.php")
+fetch("/increment.php")
     .then((res) => res.text())
     .then((data) => {
         publicCounter = parseInt(data);
@@ -27,7 +27,7 @@ fetch("/update.php")
 
 // Update public counter every 2 seconds
 setInterval(() => {
-    fetch("/update.php")
+    fetch("/increment.php")
         .then((res) => res.text())
         .then((data) => {
             publicCounter = parseInt(data);
@@ -65,8 +65,15 @@ lopiButton.addEventListener("click", () => {
 // Send click count to server every 1 second
 setInterval(() => {
     if (clickCount > 0) {
-        fetch(`/increment.php?count=` + clickCount, { cache: 'no-cache' })
-            .catch((err) => console.error(err));
+        fetch(`/increment.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `count=${clickCount}`,
+            cache: 'no-cache'
+        })
+        .catch((err) => console.error(err));
         clickCount = 0;
         if (yourCountCookie) {
             document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
