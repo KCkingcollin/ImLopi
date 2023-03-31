@@ -1,4 +1,5 @@
 # Enable browser caching for one day
+
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 day"
@@ -11,3 +12,15 @@ FileETag MTime Size
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
 </IfModule>
+
+<Files "increment.php">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</Files>
+
+<Files "update.php">
+    ExpiresActive On
+    ExpiresDefault A1
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+</Files>
