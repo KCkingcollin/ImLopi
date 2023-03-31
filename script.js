@@ -36,7 +36,7 @@ setInterval(() => {
             }
         })
         .catch((err) => console.error(err));
-}, 5000);
+}, 2000);
 
 lopiButton.addEventListener("click", () => {
     clickCount++;
