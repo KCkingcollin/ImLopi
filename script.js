@@ -62,7 +62,7 @@ lopiButton.addEventListener("click", () => {
 // Send click count to server every 1 second
 setInterval(() => {
     if (clickCount > 0) {
-        fetch(`/increment.php?count=${clickCount}`)
+        fetch(`/increment.php?count=` + clickCount, { cache: 'no-cache' })
             .catch((err) => console.error(err));
         clickCount = 0;
     }
