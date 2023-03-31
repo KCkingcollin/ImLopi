@@ -6,10 +6,13 @@ let publicCounter = 0;
 let clickCount = 0;
 let yourCount = 0;
 
-// Check if the "yourCount" cookie exists, and if so, retrieve its value
+// Check if the "yourCount" cookie exists, and if so, retrieve its value, if not make a new one
 const yourCountCookie = document.cookie.split(";").find((c) => c.trim().startsWith("yourCount="));
 if (yourCountCookie) {
     yourCount = parseInt(yourCountCookie.split("=")[1]);
+}
+else {
+  document.cookie = `yourCount=0; SameSite=None; Secure`;
 }
 
 // Get initial value of publicCounter from server
