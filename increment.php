@@ -1,52 +1,33 @@
-<?php //improved by dodo
+<?php
+// Define constants
+define('FILE_PATH', 'count.txt');
+define('MAX_COUNT', 10);
 
-// dodo if you see this remind me to add you as a contributor
+// Read the "global count" value from the file and store it in memory
+$globalCount = (int) file_get_contents(FILE_PATH);
 
-// Define constants for the file path and the maximum count value
-define("COUNTER_FILE_PATH", "count.txt");
-define("MAX_COUNT_VALUE", 10);
-
-// Check if the count parameter was passed
-if( !isset($_GET["count"]) ){
-    header("HTTP/1.1 400 Bad Request");
-    echo "Count parameter not provided.";
-    exit();
+// Check if the "count" parameter was passed
+if (isset($_POST['count'])) {
+    $count = (int) $_POST['count'];
+    
+    // If the "count" value is within the maximum limit, update the "global count" value in memory
+    if ($count <= MAX_COUNT) {
+        $globalCount += $count;
+    }
 }
 
-// Get the count value from the GET parameter
-$count = intval($_GET["count"]);
-  
-// Make sure the count is within the valid range
-if( $count <= 0 || $count > MAX_COUNT_VALUE){
-    header("HTTP/1.1 400 Bad Request");
-    echo "Invalid count value.";
-    exit();
+// Update the file and "global count" value every 5 seconds
+$lastModifiedTime = filemtime(FILE_PATH);
+while (true) {
+    if ($globalCount != (int) file_get_contents(FILE_PATH)) {
+        $difference = $globalCount - (int) file_get_contents(FILE_PATH);
+        file_put_contents(FILE_PATH, $globalCount);
+        flock($file, LOCK_UN);
+    }
+    sleep(5);
+    clearstatcache();
+    if (filemtime(FILE_PATH) > $lastModifiedTime) {
+        $globalCount = (int) file_get_contents(FILE_PATH);
+        $lastModifiedTime = filemtime(FILE_PATH);
+    }
 }
-
-// Open the counter file and lock it for writing
-$file = fopen(COUNTER_FILE_PATH, "c+");
-
-if( !flock($file, LOCK_EX) ){
-    header("HTTP/1.1 500 Internal Server Error");
-    echo "Failed to acquire lock on counter file.";
-    exit();
-}
-  
-// Read the current count from the file
-$currentCount = intval(fgets($file));
-
-// Increment the count by the specified amount
-$newCount = $currentCount + $count;
-
-// Write the new count back to the file
-rewind($file);
-fwrite($file, $newCount . "\n");
-fflush($file);
-
-// Release the file lock and close the file
-flock($file, LOCK_UN);
-fclose($file);
-
-// Print the new count as the response
-echo $newCount;
-?>
