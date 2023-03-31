@@ -79,4 +79,4 @@ setInterval(() => {
             document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
         }
     }
-}, 1000);
+}, 500);
