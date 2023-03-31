@@ -1,108 +1,54 @@
-body {
-
+body{
   background-image: url("lopi_BG.jpg");
-
   background-repeat: no-repeat;
-
   background-size: cover;
-
   margin: 0;
-
   padding: 0;
-
   color: #7c8bb4;
-
 }
-
 .container {
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   height: 100vh;
-
 }
-
 .title {
-
   font-size: 5rem;
-
   color: #7c8bb4;
-
   text-shadow: 4px 4px #f1cfd0;
-
 }
-
 .lopi-button {
-
   font-size: 3rem;
-
   text-shadow: 2px 2px #57607b;
-
   color: #7c8bb4;
-
   background-color: #f1cfd0;
-
   border: none;
-
   border-radius: 20px;
-
   padding: 10px 20px;
-
   margin-top: 20px;
-
   margin-bottom: 20px;
-
   cursor: pointer;
-
   box-shadow: 2px 2px #baa1a1;
-
   transition: background-color 0.5s ease;
-
 }
-
 .lopi-button:hover {
-
   font-size: 3.1rem;
-
   padding: 11px 22px;
-
 }
-
 .counter {
-
   font-size: 2rem;
-
   color: #7c8bb4;
-
   text-shadow: 2px 2px #57607b;
-
   margin-top: 0px;
-
 }
-
 .public-counter {
-
   font-size: 2rem;
-
   color: #7c8bb4;
-
   text-shadow: 2px 2px #57607b;
-
   margin-top: 0px;
-
 }
-
 .lopi-image {
-
   position: absolute;
-
   z-index: -1;
-
 }
-
