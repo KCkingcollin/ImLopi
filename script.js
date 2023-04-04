@@ -12,7 +12,7 @@ if (yourCountCookie) {
     yourCount = parseInt(yourCountCookie.split("=")[1]);
 }
 else {
-  document.cookie = `yourCount=0; SameSite=None; Secure`;
+    document.cookie = `yourCount=0; SameSite=None; Secure`;
 }
 
 // Get initial value of publicCounter from server
@@ -25,26 +25,13 @@ fetch("/update.php")
     })
     .catch((err) => console.error(err));
 
-// Update public counter every 2 seconds
-setInterval(() => {
-    fetch("/update.php")
-        .then((res) => res.text())
-        .then((data) => {
-            publicCounter = parseInt(data);
-            if (!isNaN(publicCounter)) {
-                publicCounterElement.innerHTML = publicCounter;
-            }
-        })
-        .catch((err) => console.error(err));
-}, 2000);
-
 lopiButton.addEventListener("click", () => {
     clickCount++;
     yourCount++;
     yourCountElement.innerHTML = yourCount;
     publicCounter++;
     publicCounterElement.innerHTML = publicCounter;
-    
+
     // Randomly display lopi image
     const lopiImage = new Image();
     lopiImage.src = `lopi_images/lopi${Math.floor(Math.random() * 3) + 1}.png`;
@@ -73,10 +60,23 @@ setInterval(() => {
             body: `count=${clickCount}`,
             cache: 'no-cache'
         })
-        .catch((err) => console.error(err));
+            .catch((err) => console.error(err));
         clickCount = 0;
         if (yourCountCookie) {
             document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
         }
     }
+}, 2000);
+
+// Update public counter every 2 seconds
+setInterval(() => {
+    fetch("/update.php")
+        .then((res) => res.text())
+        .then((data) => {
+            publicCounter = parseInt(data);
+            if (!isNaN(publicCounter)) {
+                publicCounterElement.innerHTML = publicCounter;
+            }
+        })
+        .catch((err) => console.error(err));
 }, 2000);
