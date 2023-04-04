@@ -49,34 +49,47 @@ lopiButton.addEventListener("click", () => {
     lopiAudio.play();
 });
 
-// Send click count to server every 1 second
-setInterval(() => {
-    if (clickCount > 0) {
-        fetch(`/update.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `count=${clickCount}`,
-            cache: 'no-cache'
-        })
-            .catch((err) => console.error(err));
-        clickCount = 0;
-        if (yourCountCookie) {
-            document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
-        }
-    }
-}, 2000);
+// server calls 
 
-// Update public counter every 2 seconds
-setInterval(() => {
-    fetch("/update.php")
-        .then((res) => res.text())
-        .then((data) => {
-            publicCounter = parseInt(data);
-            if (!isNaN(publicCounter)) {
-                publicCounterElement.innerHTML = publicCounter;
-            }
-        })
-        .catch((err) => console.error(err));
-}, 2000);
+let count = 0;
+
+function updateLoop() {
+    console.log(`Server calls ${count}`);
+    count++;
+    // Send click count to server
+    if (count < 5) {
+        if (clickCount > 0) {
+            fetch(`/update.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `count=${clickCount}`,
+                cache: 'no-cache'
+            })
+                .then(() => {
+                    clickCount = 0;
+                    if (yourCountCookie) {
+                        document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
+                    }
+                })
+                .catch((err) => console.error(err));
+        }
+        setTimeout(updateLoop, 1000); // sleep
+    } else {
+        // Update public counter
+        fetch("/update.php")
+            .then((res) => res.text())
+            .then((data) => {
+                publicCounter = parseInt(data);
+                if (!isNaN(publicCounter)) {
+                    publicCounterElement.innerHTML = publicCounter;
+                }
+            })
+            .catch((err) => console.error(err));
+        count = 0;
+        setTimeout(updateLoop, 1000);
+    }
+}
+
+updateLoop();
