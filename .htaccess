@@ -1,5 +1,7 @@
 # Enable browser caching for one day
 
+Header set Cache-Control "must-revalidate"
+
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 day"
@@ -10,7 +12,8 @@ FileETag MTime Size
 
 # Enable gzip compression for text files
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+    application/x-javascript
 </IfModule>
 
 <Files "increment.php">
