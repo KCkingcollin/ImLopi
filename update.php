@@ -44,6 +44,7 @@ if (isset($_POST['count']) && $_POST['count'] > 0 && $_POST['count'] <= MAX_COUN
     $count = intval($_POST['count']);
     $globalCount += $count;
     $sessionCount += $count;
+    $sessionCalls++;
 }
 
 // Update file if global count has changed
@@ -63,7 +64,7 @@ if ($globalCount !== $fileCount && !$userOnPage) {
 echo $globalCount;
 
 $_SESSION['sessionCount'] = $sessionCount;
-$_SESSION['sessionCalls'] += 1;
+$_SESSION['sessionCalls'] = $sessionCalls;
 $_SESSION['globalCount'] = $globalCount;
 
 ?>
