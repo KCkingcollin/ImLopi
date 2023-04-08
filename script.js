@@ -102,7 +102,7 @@ lopiButton.addEventListener('mouseup', () => {
     timeout = setTimeout(() => {
         console.log('Button unpressed timeout');
         lopiButtonClicked = false;
-    }, 2000); // Delay in milliseconds
+    }, 1000); // Delay in milliseconds
 });
 lopiButton.addEventListener('mousedown', () => {
     clearTimeout(timeout);
@@ -132,4 +132,5 @@ setInterval(() => {
         }
         updateCounters();
     }
-}, 5000);
+}, 2000);
+
