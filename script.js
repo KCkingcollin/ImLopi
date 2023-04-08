@@ -60,7 +60,11 @@ lopiButton.addEventListener("click", () => {
             cache: 'no-cache'
         })
             .then(() => {
-                clickCount = clickCount - 15;
+                if (clickCount - 15 < 0) {
+                    clickCount = 0;
+                } else {
+                    clickCount = clickCount - 15;
+                }
             })
             .catch((err) => console.error(err));
     } else {
@@ -118,7 +122,11 @@ setInterval(() => {
                 cache: 'no-cache'
             })
                 .then(() => {
-                    clickCount = 0;
+                    if (clickCount - 15 < 0) {
+                        clickCount = 0;
+                    } else {
+                        clickCount = clickCount - 15;
+                    }
                 })
                 .catch((err) => console.error(err));
         }
