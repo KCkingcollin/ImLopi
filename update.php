@@ -8,35 +8,30 @@ session_start([
 define('FILE_PATH', 'count.txt');
 define('MAX_COUNT', 25);
 
-// Initialize global count value in memory
-if (isset($_SESSION['globalCount'])) {
-    // Session variable is set and not empty
-    $globalCount = $_SESSION['globalCount'];
-} else {
-    // Session variable is either not set or empty
+// Session variable is either not set or empty
+if (! isset($_SESSION['globalCount'])) {
     $_SESSION['globalCount'] = intval(file_get_contents(FILE_PATH));
-    $globalCount = $_SESSION['globalCount'];
 }
+// Initialize global count value in memory
+$globalCount = $_SESSION['globalCount'];
 
-// Initialize session call count value in memory
-if (isset($_SESSION['sessionCalls'])) {
-    // Session variable is set and not empty
-    $sessionCalls = $_SESSION['sessionCalls'];
-} else {
-    // Session variable is either not set or empty
+
+// Session variable is either not set or empty
+if (! isset($_SESSION['sessionCalls'])) {
     $_SESSION['sessionCalls'] = 0;
-    $sessionCalls = $_SESSION['sessionCalls'];
 }
+// Initialize session call count value in memory
+$sessionCalls = $_SESSION['sessionCalls'];
 
-// Initialize session count value in memory
+
+// Session variable is either not set or empty
 if (isset($_SESSION['sessionCount'])) {
-    // Session variable is set and not empty
-    $sessionCount = $_SESSION['sessionCount'];
-} else {
-    // Session variable is either not set or empty
     $_SESSION['sessionCount'] = 0;
-    $sessionCount = $_SESSION['sessionCount'];
 }
+// Initialize session count value in memory
+$sessionCount = $_SESSION['sessionCount'];
+
+
 if (isset($_POST['user_leaving'])) {
     // User leaving event detected, handle the event here.
     // For example, update a database or log the event.
