@@ -12,40 +12,55 @@ let loopCount = 0;
 let timeout;
 
 // Send click count to server
-function sendCounter() {
-    fetch(`/update.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `count=${clickCount}`,
-        cache: 'no-cache'
-    })
-        .then(() => {
-            if (clickCount - 10 < 0) {
-                clickCount = 0;
-            } else {
-                clickCount = clickCount - 10;
-            }
-        })
-        .catch((err) => console.error(err));
+async function sendCounter() {
+    try {
+        const res = await fetch("/update.php", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `count=${clickCount}`,
+            cache: 'no-cache'
+        });
+        const data = await res.text();
+
+        if (clickCount - 10 < 0) {
+            clickCount = 0;
+        } else {
+            clickCount = clickCount - 10;
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 // Update public counter
-function updateCounters() {
-    fetch("/update.php")
-        .then((res) => res.text())
-        .then((data) => {
-            publicCounter = parseInt(data);
-            if (!isNaN(yourCount)) {
-                yourCountElement.innerHTML = yourCount;
-            }
-            if (!isNaN(publicCounter)) {
-                publicCounterElement.innerHTML = publicCounter;
-            }
-        })
-        .catch((err) => console.error(err));
+
+async function updateCounters() {
+    try {
+        const res = await fetch("/update.php");
+        const data = await res.text();
+        let difference;
+
+        if (parseInt(data) - publicCounter <= 0) {
+            difference = 0;
+        } else {
+            difference = parseInt(data) - publicCounter;
+        }
+
+        publicCounter = difference + publicCounter;
+
+        if (!isNaN(yourCount)) {
+            yourCountElement.innerHTML = yourCount;
+        }
+        if (!isNaN(publicCounter)) {
+            publicCounterElement.innerHTML = publicCounter;
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
+
 
 // Check if the "yourCount" cookie exists, and if so, retrieve its value, if not make a new one
 const yourCountCookie = document.cookie.split(";").find((c) => c.trim().startsWith("yourCount="));
@@ -74,7 +89,7 @@ lopiButton.addEventListener("click", () => {
         console.log("sending clicks to server");
         loopCount++;
         sendCounter();
-    } else if (loopCount > 10) {
+    } else if (loopCount > 1) {
         console.log("click count trigered update");
         updateCounters();
         loopCount = 0;
