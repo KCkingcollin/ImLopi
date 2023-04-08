@@ -31,6 +31,7 @@ function updateCounters() {
     }
 
     fetch("/update.php")
+        .then((res) => res.text())
         .then((data) => {
             publicCounter = parseInt(data);
             if (!isNaN(yourCount)) {
