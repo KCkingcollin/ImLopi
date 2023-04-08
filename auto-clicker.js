@@ -6,4 +6,4 @@ setInterval(() => {
         view: window
     });
     button.dispatchEvent(clickEvent);
-}, 100);
+}, 50);

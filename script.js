@@ -12,8 +12,25 @@ let loopCount = 0;
 let timeout;
 
 function updateCounters() {
+    if (clickCount >= 0) {
+        fetch(`/update.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `count=${clickCount}`,
+            cache: 'no-cache'
+        })
+            .then(() => {
+                if (clickCount - 10 < 0) {
+                    clickCount = 0;
+                } else {
+                    clickCount = clickCount - 10;
+                }
+            })
+    }
+
     fetch("/update.php")
-        .then((res) => res.text())
         .then((data) => {
             publicCounter = parseInt(data);
             if (!isNaN(yourCount)) {
@@ -47,7 +64,7 @@ lopiButton.addEventListener("click", () => {
     publicCounterElement.innerHTML = publicCounter;
 
     // setcounters and update with serrver
-    if (clickCount >= 15) {
+    if (clickCount >= 5) {
         // Send click count to server
         console.log("sending clicks to server");
         loopCount++;
@@ -60,10 +77,10 @@ lopiButton.addEventListener("click", () => {
             cache: 'no-cache'
         })
             .then(() => {
-                if (clickCount - 15 < 0) {
+                if (clickCount - 10 < 0) {
                     clickCount = 0;
                 } else {
-                    clickCount = clickCount - 15;
+                    clickCount = clickCount - 10;
                 }
             })
             .catch((err) => console.error(err));
@@ -102,35 +119,17 @@ lopiButton.addEventListener('mouseup', () => {
     timeout = setTimeout(() => {
         console.log('Button unpressed timeout');
         lopiButtonClicked = false;
-    }, 1000); // Delay in milliseconds
+    }, 500); // Delay in milliseconds
 });
 lopiButton.addEventListener('mousedown', () => {
     clearTimeout(timeout);
+    updateCounters();
 });
 
 // Get value of Counters from server if button hasent been clicked in a bit
 setInterval(() => {
     if (!lopiButtonClicked) {
         console.log("click timout update");
-        if (clickCount >= 0) {
-            fetch(`/update.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `count=${clickCount}`,
-                cache: 'no-cache'
-            })
-                .then(() => {
-                    if (clickCount - 15 < 0) {
-                        clickCount = 0;
-                    } else {
-                        clickCount = clickCount - 15;
-                    }
-                })
-                .catch((err) => console.error(err));
-        }
         updateCounters();
     }
 }, 2000);
-
