@@ -11,24 +11,28 @@ let loopCount = 0;
 
 let timeout;
 
-function updateCounters() {
-    if (clickCount >= 0) {
-        fetch(`/update.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `count=${clickCount}`,
-            cache: 'no-cache'
+// Send click count to server
+function sendCounter() {
+    fetch(`/update.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `count=${clickCount}`,
+        cache: 'no-cache'
+    })
+        .then(() => {
+            if (clickCount - 10 < 0) {
+                clickCount = 0;
+            } else {
+                clickCount = clickCount - 10;
+            }
         })
-            .then(() => {
-                if (clickCount - 10 < 0) {
-                    clickCount = 0;
-                } else {
-                    clickCount = clickCount - 10;
-                }
-            })
-    }
+        .catch((err) => console.error(err));
+}
+
+// Update public counter
+function updateCounters() {
     fetch("/update.php")
         .then((res) => res.text())
         .then((data) => {
@@ -66,34 +70,16 @@ lopiButton.addEventListener("click", () => {
     publicCounterElement.innerHTML = publicCounter;
 
     // setcounters and update with serrver
-    if (clickCount >= 5) {
-        // Send click count to server
+    if (clickCount >= 10) {
         console.log("sending clicks to server");
         loopCount++;
-        fetch(`/update.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `count=${clickCount}`,
-            cache: 'no-cache'
-        })
-            .then(() => {
-                if (clickCount - 10 < 0) {
-                    clickCount = 0;
-                } else {
-                    clickCount = clickCount - 10;
-                }
-            })
-            .catch((err) => console.error(err));
-    } else {
-        // Update public counter
-        if (loopCount > 5) {
-            console.log("click count trigered update");
-            updateCounters();
-            loopCount = 0;
-        }
+        sendCounter();
+    } else if (loopCount > 10) {
+        console.log("click count trigered update");
+        updateCounters();
+        loopCount = 0;
     }
+
     // update the cookie
     if (yourCountCookie) {
         document.cookie = `yourCount=${yourCount}; SameSite=None; Secure`;
@@ -122,7 +108,7 @@ lopiButton.addEventListener('mouseup', () => {
         console.log('Button unpressed timeout');
         lopiButtonClicked = false;
         updateCounters();
-    }, 500); // Delay in milliseconds
+    }, 500);
 });
 lopiButton.addEventListener('mousedown', () => {
     clearTimeout(timeout);
@@ -132,6 +118,7 @@ lopiButton.addEventListener('mousedown', () => {
 setInterval(() => {
     if (!lopiButtonClicked) {
         console.log("click timout update");
+        sendCounter();
         updateCounters();
     }
 }, 2000);
