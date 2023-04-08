@@ -11,6 +11,13 @@ let loopCount = 0;
 
 let timeout;
 
+// tell the server the user is leaving
+function sendUserLeavingData() {
+    const formData = new FormData();
+    formData.append('user_leaving', 'true');
+    navigator.sendBeacon('/update.php', formData);
+}
+
 // Send click count to server
 async function sendCounter() {
     try {
@@ -35,7 +42,6 @@ async function sendCounter() {
 }
 
 // Update public counter
-
 async function updateCounters() {
     try {
         const res = await fetch("/update.php");
@@ -130,6 +136,10 @@ lopiButton.addEventListener('mouseup', () => {
 });
 lopiButton.addEventListener('mousedown', () => {
     clearTimeout(timeout);
+});
+
+window.addEventListener("beforeunload", function (event) {
+    sendUserLeavingData();
 });
 
 // Get value of Counters from server if button hasent been clicked in a bit
