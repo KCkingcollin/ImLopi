@@ -85,11 +85,11 @@ lopiButton.addEventListener("click", () => {
     publicCounterElement.innerHTML = publicCounter;
 
     // setcounters and update with serrver
-    if (clickCount >= 10) {
+    if (clickCount >= 20) {
         console.log("sending clicks to server");
         loopCount++;
         sendCounter();
-    } else if (loopCount > 1) {
+    } else if (loopCount > 5) {
         console.log("click count trigered update");
         updateCounters();
         loopCount = 0;
@@ -122,6 +122,9 @@ lopiButton.addEventListener('mouseup', () => {
     timeout = setTimeout(() => {
         console.log('Button unpressed timeout');
         lopiButtonClicked = false;
+        if (clickCount > 0) {
+            sendCounter();
+        }
         updateCounters();
     }, 500);
 });
@@ -133,7 +136,9 @@ lopiButton.addEventListener('mousedown', () => {
 setInterval(() => {
     if (!lopiButtonClicked) {
         console.log("click timout update");
-        sendCounter();
+        if (clickCount > 0) {
+            sendCounter();
+        }
         updateCounters();
     }
 }, 2000);

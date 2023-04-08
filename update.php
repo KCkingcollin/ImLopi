@@ -2,7 +2,7 @@
 
 // Define constants
 define('FILE_PATH', 'count.txt');
-define('MAX_COUNT', 20);
+define('MAX_COUNT', 25);
 
 // Initialize global count value in memory
 $globalCount = intval(file_get_contents(FILE_PATH));
