@@ -29,7 +29,6 @@ function updateCounters() {
                 }
             })
     }
-
     fetch("/update.php")
         .then((res) => res.text())
         .then((data) => {
@@ -52,7 +51,9 @@ if (yourCountCookie) {
 else {
     document.cookie = `yourCount=0; SameSite=None; Secure`;
 }
-
+if (!isNaN(yourCount)) {
+    yourCountElement.innerHTML = yourCount;
+}
 updateCounters();
 
 // lopi button listener 
