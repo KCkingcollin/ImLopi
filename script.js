@@ -120,11 +120,11 @@ lopiButton.addEventListener('mouseup', () => {
     timeout = setTimeout(() => {
         console.log('Button unpressed timeout');
         lopiButtonClicked = false;
+        updateCounters();
     }, 500); // Delay in milliseconds
 });
 lopiButton.addEventListener('mousedown', () => {
     clearTimeout(timeout);
-    updateCounters();
 });
 
 // Get value of Counters from server if button hasent been clicked in a bit
