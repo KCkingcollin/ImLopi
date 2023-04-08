@@ -25,7 +25,7 @@ $sessionCalls = $_SESSION['sessionCalls'];
 
 
 // Session variable is either not set or empty
-if (isset($_SESSION['sessionCount'])) {
+if (! isset($_SESSION['sessionCount'])) {
     $_SESSION['sessionCount'] = 0;
 }
 // Initialize session count value in memory
