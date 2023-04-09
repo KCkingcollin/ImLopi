@@ -2,19 +2,20 @@ const lopiButton = document.getElementById("lopiButton");
 const yourCountElement = document.getElementById("yourCount");
 const publicCounterElement = document.getElementById("publicCounter");
 
-let lopiButtonClicked = false;
-
-let publicCounter = 0;
 let clickCount = 0;
-let yourCount = 0;
 let loopCount = 0;
+let publicCounter = 0;
+let difference = 0;
 
 let timeout;
+let lopiButtonClicked;
+let yourCount;
+
 
 // tell the server the user is leaving
 function sendUserLeavingData() {
     const formData = new FormData();
-    formData.append('user_leaving', 'true');
+    formData.append('user_leaving', true);
     navigator.sendBeacon('/update.php', formData);
 }
 
@@ -31,10 +32,10 @@ async function sendCounter() {
         });
         const data = await res.text();
 
-        if (clickCount - 10 < 0) {
+        if (clickCount - 15 < 0) {
             clickCount = 0;
         } else {
-            clickCount = clickCount - 10;
+            clickCount = clickCount - 15;
         }
     } catch (err) {
         console.error(err);
@@ -46,7 +47,6 @@ async function updateCounters() {
     try {
         const res = await fetch("/update.php");
         const data = await res.text();
-        let difference;
 
         if (parseInt(data) - publicCounter <= 0) {
             difference = 0;
@@ -67,7 +67,6 @@ async function updateCounters() {
     }
 }
 
-
 // Check if the "yourCount" cookie exists, and if so, retrieve its value, if not make a new one
 const yourCountCookie = document.cookie.split(";").find((c) => c.trim().startsWith("yourCount="));
 if (yourCountCookie) {
@@ -75,15 +74,12 @@ if (yourCountCookie) {
 }
 else {
     document.cookie = `yourCount=0; SameSite=None; Secure`;
-}
-if (!isNaN(yourCount)) {
-    yourCountElement.innerHTML = yourCount;
+    yourCount = 0;
 }
 updateCounters();
 
 // lopi button listener 
 lopiButton.addEventListener("click", () => {
-    lopiButtonClicked = true;
     clickCount++;
     yourCount++;
     yourCountElement.innerHTML = yourCount;
@@ -91,11 +87,11 @@ lopiButton.addEventListener("click", () => {
     publicCounterElement.innerHTML = publicCounter;
 
     // setcounters and update with serrver
-    if (clickCount >= 20) {
+    if (clickCount >= 15) {
         console.log("sending clicks to server");
         loopCount++;
         sendCounter();
-    } else if (loopCount > 5) {
+    } else if (loopCount >= 2) {
         console.log("click count trigered update");
         updateCounters();
         loopCount = 0;

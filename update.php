@@ -13,7 +13,7 @@ if (! isset($_SESSION['globalCount'])) {
     $_SESSION['globalCount'] = intval(file_get_contents(FILE_PATH));
 }
 // Initialize global count value in memory
-$globalCount = $_SESSION['globalCount'];
+$globalCount = intval($_SESSION['globalCount']);
 
 
 // Session variable is either not set or empty
@@ -21,7 +21,7 @@ if (! isset($_SESSION['sessionCalls'])) {
     $_SESSION['sessionCalls'] = 0;
 }
 // Initialize session call count value in memory
-$sessionCalls = $_SESSION['sessionCalls'];
+$sessionCalls = intval($_SESSION['sessionCalls']);
 
 
 // Session variable is either not set or empty
@@ -29,22 +29,25 @@ if (! isset($_SESSION['sessionCount'])) {
     $_SESSION['sessionCount'] = 0;
 }
 // Initialize session count value in memory
-$sessionCount = $_SESSION['sessionCount'];
+$sessionCount = intval($_SESSION['sessionCount']);
 
 
 if (isset($_POST['user_leaving'])) {
-    // User leaving event detected, handle the event here.
-    // For example, update a database or log the event.
+    $user_leaving = $_POST['user_leaving'];
+    if (is_bool($user_leaving) && $user_leaving == true)
     $userOnPage = false;
 } else {
     $userOnPage = true;
 }
 
-if (isset($_POST['count']) && $_POST['count'] > 0 && $_POST['count'] <= MAX_COUNT) {
+if (isset($_POST['count'])) {
     $count = intval($_POST['count']);
-    $globalCount += $count;
-    $sessionCount += $count;
-    $sessionCalls++;
+    if ($count > 0 && $count <= MAX_COUNT) {
+        $count = intval($_POST['count']);
+        $globalCount += $count;
+        $sessionCount += $count;
+        $sessionCalls++;
+    }     
 }
 
 // Update file if global count has changed
