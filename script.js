@@ -32,10 +32,10 @@ async function sendCounter() {
         });
         const data = await res.text();
 
-        if (clickCount - 15 < 0) {
+        if (clickCount - 10 < 0) {
             clickCount = 0;
         } else {
-            clickCount = clickCount - 15;
+            clickCount = clickCount - 10;
         }
     } catch (err) {
         console.error(err);
@@ -87,7 +87,7 @@ lopiButton.addEventListener("click", () => {
     publicCounterElement.innerHTML = publicCounter;
 
     // setcounters and update with serrver
-    if (clickCount >= 15) {
+    if (clickCount >= 10) {
         console.log("sending clicks to server");
         loopCount++;
         sendCounter();

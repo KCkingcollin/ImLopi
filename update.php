@@ -6,7 +6,7 @@ session_start([
 
 // Define constants
 define('FILE_PATH', 'count.txt');
-define('MAX_COUNT', 25);
+define('MAX_COUNT', 15);
 
 // Session variable is either not set or empty
 if (! isset($_SESSION['globalCount'])) {
