@@ -15,7 +15,7 @@ let yourCount;
 // tell the server the user is leaving
 function sendUserLeavingData() {
     const formData = new FormData();
-    formData.append('user_leaving', true);
+    formData.append('user_leaving', "true");
     navigator.sendBeacon('/update.php', formData);
 }
 

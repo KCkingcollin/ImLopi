@@ -7,6 +7,7 @@ session_start([
 // Define constants
 define('FILE_PATH', 'count.txt');
 define('MAX_COUNT', 15);
+$userOnPage = true;
 
 // Session variable is either not set or empty
 if (! isset($_SESSION['globalCount'])) {
@@ -31,19 +32,15 @@ if (! isset($_SESSION['sessionCount'])) {
 // Initialize session count value in memory
 $sessionCount = intval($_SESSION['sessionCount']);
 
-
 if (isset($_POST['user_leaving'])) {
     $user_leaving = $_POST['user_leaving'];
-    if (is_bool($user_leaving) && $user_leaving == true)
+    if (is_bool($user_leaving) && $user_leaving == "true")
     $userOnPage = false;
-} else {
-    $userOnPage = true;
 }
 
 if (isset($_POST['count'])) {
     $count = intval($_POST['count']);
     if ($count > 0 && $count <= MAX_COUNT) {
-        $count = intval($_POST['count']);
         $globalCount += $count;
         $sessionCount += $count;
         $sessionCalls++;
