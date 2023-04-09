@@ -52,12 +52,7 @@ if (isset($_POST['count'])) {
 
 // Update file if global count has changed
 $fileCount = intval(file_get_contents(FILE_PATH));
-if ($globalCount !== $fileCount && !$userOnPage) {
-    file_put_contents(FILE_PATH, $fileCount + $sessionCount);
-    $globalCount = intval(file_get_contents(FILE_PATH));
-    $sessionCount = 0;
-    $sessionCalls = 0;
-} elseif ($globalCount !== $fileCount && $userOnPage && $sessionCalls >= 5) {
+if ($globalCount !== $fileCount && ((!$userOnPage) || ($userOnPage && $sessionCalls >= 5))) {
     file_put_contents(FILE_PATH, $fileCount + $sessionCount);
     $globalCount = intval(file_get_contents(FILE_PATH));
     $sessionCount = 0;
